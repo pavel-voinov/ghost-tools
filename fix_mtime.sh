@@ -5,9 +5,6 @@ FNAME=`basename "$f"`
 FDIR=`dirname "$f"`
 F=`echo "$FNAME" | tr '[:lower:]' '[:upper:]'`
 e="${F##*.}"
-if [ "$e" = 'LOG' ]; then
-  exit 0
-fi
 
 get_video_timestamp () {
   local TS=`mediainfo --Inform="Video;%Encoded_Date%" "$1" 2>/dev/null | cut -d ' ' -f 2,3 --output-delimiter='_' | sed -r 's/:/-/g'`
@@ -36,7 +33,6 @@ if [ -f "$f" ]; then
       ;;
     *)
       D=''
-      M=''
       T='UNKNOWN'
       ;;
   esac
@@ -48,6 +44,6 @@ if [ -f "$f" ]; then
   if [ "$T" = 'IMAGE' ]; then
     exiv2 -T rename "$f"
   else
-    echo "$f - $D"
+    echo "`date -r $f` vs $D"
   fi
 fi
