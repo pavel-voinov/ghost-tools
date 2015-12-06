@@ -57,13 +57,13 @@ if [ -f "$f" ]; then
     FSTAMP=`get_file_timestamp "$f"`
     if [ "$FSTAMP" != "$D" ]; then
       if [[ $flag -eq 0 && "$T" = 'IMAGE' ]]; then
-        echo 'Change of modification timstamp by Exif metadata'
+        echo "$f: set mtime by Exif metadata"
         exiv2 -T rename "$f"
       else
         if [ $flag -eq 1 ]; then
-          echo 'Change of modification timstamp by file name'
+          echo "$f: set mtime by file name"
         else
-          echo 'Change of modification timstamp by metadata'
+          echo "$f: set mtime by metadata"
         fi
         STAMP=`echo $D | sed -r 's/_//g;s/-/./4;s/-//g'`
         touch --no-create -t $STAMP "$f"
