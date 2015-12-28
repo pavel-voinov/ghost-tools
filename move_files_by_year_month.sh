@@ -1,5 +1,5 @@
 #!/bin/bash
-BASEDIR=${1:-'/media/mypassport/Photos'}
+BASEDIR=${1:-'/media/storage/Photos'}
 
 index_name () {
   local _d=`dirname "$1"`
@@ -7,7 +7,6 @@ index_name () {
   local _n="${_f%%.*}"
   local _e="${_f##*.}"
   local __n="$_f"
-#  echo "$_d -> $_n -> $_e -> $__n"
   i=1
   while [[ -f "$_d/$__n" && $i -le 999 ]]; do
     __n="${_n}_`printf "%03i" $i`.${_e}"
@@ -28,11 +27,9 @@ move_file () {
     else
       n=$( index_name "$_F" )
       cp -v --no-preserve=ownership "$_f" "$_d/$n" && rm -v "$_f"
-#      mv -v "$_f" "$_d/$n"
     fi
   else
     cp -v --no-preserve=ownership "$_f" "$_F" && rm -v "$_f"
-#    mv -v "$_f" "$_F"
   fi
 }
 
