@@ -78,7 +78,7 @@ if [ -f "$f" ]; then
     if [ "$T" = 'IMAGE' ]; then
       exiv2 -T rename "$f"
     fi
-    mv -v "$f" "$FDIR/$n"
+    cp -v --no-preserve=ownership "$f" "$FDIR/$n" && rm -v "$f"
   fi
 fi
 
