@@ -5,7 +5,7 @@ FNAME=`basename "$f"`
 FDIR=`dirname "$f"`
 F=`echo "$FNAME" | tr '[:lower:]' '[:upper:]'`
 e="${F##*.}"
-if [ "$e" = 'LOG' ]; then
+if [[ "$e" = 'LOG' || "$e" = 'INI' ]]; then
   exit 0
 fi
 logfile="rename_`date +%Y-%m-%d_%H-%M-%S`.log"
@@ -65,20 +65,21 @@ if [ -f "$f" ]; then
   fi
 
   if [ -z "$D" ]; then
-    D=`get_file_timestamp "$f"`
-  fi
-
-  if [ -n "$M" ]; then
-    n=$( index_name "${D}_${M}" "$e" )
+    echo "File \"$f\". No Exif data found. TS: `get_file_timestamp "$f"`"
+#    D=`get_file_timestamp "$f"`
   else
-    n=$( index_name "${D}" "$e" )
-  fi
-
-  if [[ "$FNAME" != "$n" && "$n" != ".$e" ]]; then
-    if [ "$T" = 'IMAGE' ]; then
-      exiv2 -T rename "$f"
+    if [ -n "$M" ]; then
+      n=$( index_name "${D}_${M}" "$e" )
+    else
+      n=$( index_name "${D}" "$e" )
     fi
-    cp -v --no-preserve=ownership "$f" "$FDIR/$n" && rm -v "$f"
+
+    if [[ "$FNAME" != "$n" && "$n" != ".$e" ]]; then
+      if [ "$T" = 'IMAGE' ]; then
+        exiv2 -T rename "$f"
+      fi
+      cp -v --no-preserve=ownership "$f" "$FDIR/$n" && rm -v "$f"
+    fi
   fi
 fi
 
