@@ -1,5 +1,5 @@
 #!/bin/bash
-BASEDIR=${1:-'/media/storage/Photos'}
+BASEDIR=${1:-'/media/NS4300N/Photos'}
 
 index_name () {
   local _d=`dirname "$1"`
