@@ -67,9 +67,9 @@ if [ -f "$f" ]; then
 
   if [ -z "$D" ]; then
     echo "File \"$f\". No Exif data found. TS: `get_file_timestamp "$f"`"
-    if [ "$use_ts" == 'Y' then
+    if [ "$use_ts" == 'Y' ]; then
       D=`get_file_timestamp "$f"`
-      M=`echo ${FNAME%.*} | sed -r 's/[^[:alnum:]_#]/_/g'`
+      M=`echo "${FNAME%.*}" | sed -r 's/[^[:alnum:]_#]/_/g'`
     fi
   fi
 
