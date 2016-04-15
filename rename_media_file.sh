@@ -1,5 +1,6 @@
 #!/bin/bash
 f="$1"
+use_ts=`echo ${2:-'N'} | tr '[:lower:]' '[:upper:]'` # should be Y
 
 FNAME=`basename "$f"`
 FDIR=`dirname "$f"`
@@ -66,8 +67,13 @@ if [ -f "$f" ]; then
 
   if [ -z "$D" ]; then
     echo "File \"$f\". No Exif data found. TS: `get_file_timestamp "$f"`"
-#    D=`get_file_timestamp "$f"`
-  else
+    if [ "$use_ts" == 'Y' then
+      D=`get_file_timestamp "$f"`
+      M=`echo ${FNAME%.*} | sed -r 's/[^[:alnum:]_#]/_/g'`
+    fi
+  fi
+
+  if [ -n "$D" ]; then
     if [ -n "$M" ]; then
       n=$( index_name "${D}_${M}" "$e" )
     else
