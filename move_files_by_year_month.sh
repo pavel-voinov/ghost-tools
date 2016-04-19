@@ -38,7 +38,7 @@ for f in `find * -type f -regextype posix-extended -regex '[0-9]{4}-(0[1-9]|1[01
   Y=`echo "$f" | cut -d '-' -f 1`
   M=`echo "$f" | cut -d '-' -f 2`
   if [ $Y -gt 1970 ]; then
-    mkdir -p "$BASEDIR/$Y/$M"
+    mkdir -p "$BASEDIR/$Y/$M" && touch --no-create -t "${Y}01010000" "$BASEDIR/$Y" && touch --no-create -t "${Y}${M}010000" "$BASEDIR/$Y/$M"
     move_file "$f" "$BASEDIR/$Y/$M"
   fi
 done
