@@ -33,9 +33,12 @@ move_file () {
   fi
 }
 
-for f in `find * -type f -regextype posix-extended -regex '[0-9]{4}-(0[1-9]|1[012])-.*'`; do
+IFS=$(echo -en "\n\b")
+for f in `find * -type f -regextype posix-extended -regex '[0-9]{4}-(0[1-9]|1[012])-[0-9]{2}_[0-9]{2}-[0-9]{2}-[0-9]{2}.*'`; do
   Y=`echo "$f" | cut -d '-' -f 1`
   M=`echo "$f" | cut -d '-' -f 2`
-  mkdir -p "$BASEDIR/$Y/$M"
-  move_file "$f" "$BASEDIR/$Y/$M"
+  if [ $Y -gt 1970 ]; then
+    mkdir -p "$BASEDIR/$Y/$M"
+    move_file "$f" "$BASEDIR/$Y/$M"
+  fi
 done
