@@ -23,12 +23,12 @@ get_image_timestamp () {
 
 get_image_camera_model () {
   local MODEL=`exiv2 -g 'Exif.Image.Model' print "$1" 2>/dev/null | sed -r 's/\s+/\t/g' | cut -f4- | sed -r 's/\t/_/g;s/.*/\U&/g;s/_DIGITAL.*$//;s/_+$//g'`
-  echo "$MODEL"
+  echo "$MODEL" | sed -r 's/[^[:alnum:]_%#,()\-]//g'
 }
 
 get_video_camera_model () {
   local MODEL=''
-  echo "$MODEL"
+  echo "$MODEL" | sed -r 's/[^[:alnum:]_%#,()\-]//g'
 }
 
 get_file_timestamp () {
@@ -84,7 +84,8 @@ if [ -f "$f" ]; then
       if [ "$T" = 'IMAGE' ]; then
         exiv2 -T rename "$f"
       fi
-      cp -v --no-preserve=ownership "$f" "$FDIR/$n" && rm -v "$f"
+#      cp -v --no-preserve=ownership "$f" "$FDIR/$n" && rm -v "$f"
+      mv -v "$f" "$FDIR/$n"
     fi
   fi
 fi
