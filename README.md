@@ -18,7 +18,7 @@ Where TS: ... shows file timestamp.
   Base directory /media/NS4300/Photos is default if it's not specified as first parameter of `move_files_by_year_month.sh` script.
   `move_files_by_year_month.sh` does:
     - check if file with the same name exists in target directory
-    - if it exists and has the same size source file will be deleted
+    - if it exists (assumin all indexed versions too), has the same size and md5sum than source file will be deleted
     - if it exists byt has different size new file will be created with indexed name <file_name>_001... or <file_name>_002, ...
 - If there are some file without metadata are remained in temporary source directory and I trust their timestamps I run `rename_media_files.sh Y` to rename files by the similar template "YYYY-MM-DD_HH24-MI-SS_<original filename>.<extention in upper case>" but based on file timestamp.
 - another call of `move_files_by_year_month.sh` is needed then to move files to /media/NS4300/Photos/YYYY/MM/ or wherever specified.
