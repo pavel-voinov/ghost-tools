@@ -19,10 +19,33 @@ move_file () {
   local _f="$1"
   local _d="$2"
   local _F="$_d/$_f"
+  local _fn="${_f%.*}"
+  local _fe="${_f##*.}"
+  local _FN="$_d/$_fn"
+
+  # try to find the same file
+  local _found=0
   if [ -f "$_F" ]; then
-    s1=`wc -c "$_f" | cut -d ' ' -f 1`
-    s2=`wc -c "$_F" | cut -d ' ' -f 1`
-    if [ $s1 -eq $s2 ]; then
+    local s1=`wc -c "$_f" | cut -d ' ' -f 1`
+    local s2=0
+    local cksum1=`md5sum -b "$_f" | cut -d ' ' -f 1`
+    local cksum2=''
+
+    for x in `ls -1 $_F ${_FN}_[0-9][0-9][0-9].${_fe} 2>/dev/null`; do
+      # compare by size
+      s2=`wc -c "$x" | cut -d ' ' -f 1`
+      if [ $s1 -eq $s2 ]; then
+        # compare by md5sum
+        cksum2=`md5sum -b "$x" | cut -d ' ' -f 1`
+        if [ "$cksum1" == "$cksum2" ]; then
+          _found=1
+          _dup_file="$x"
+        fi
+      fi
+    done
+
+    if [ $_found -eq 1 ]; then
+      echo "Duplicate of \"$_dup_file\""
       rm -v "$_f"
     else
       n=$( index_name "$_F" )
