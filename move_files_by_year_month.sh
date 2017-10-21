@@ -49,10 +49,10 @@ move_file () {
       rm -v "$_f"
     else
       n=$( index_name "$_F" )
-      cp -v --no-preserve=ownership "$_f" "$_d/$n" && rm -v "$_f"
+      cp -v --no-preserve=ownership "$_f" "$_d/$n" && rm -v "$_f" && chmod 0664 "$_d/$n"
     fi
   else
-    cp -v --no-preserve=ownership "$_f" "$_F" && rm -v "$_f"
+    cp -v --no-preserve=ownership "$_f" "$_F" && rm -v "$_f" && chmod 0664 "$_d/$n"
   fi
 }
 
@@ -61,7 +61,7 @@ for f in `find * -type f -regextype posix-extended -regex '[0-9]{4}-(0[1-9]|1[01
   Y=`echo "$f" | cut -d '-' -f 1`
   M=`echo "$f" | cut -d '-' -f 2`
   if [ $Y -gt 1970 ]; then
-    mkdir -p "$BASEDIR/$Y/$M" && touch --no-create -t "${Y}01010000" "$BASEDIR/$Y" && touch --no-create -t "${Y}${M}010000" "$BASEDIR/$Y/$M"
+    mkdir -p "$BASEDIR/$Y/$M" && chmod 0775 "$BASEDIR/$Y/$M" && touch --no-create -t "${Y}01010000" "$BASEDIR/$Y" && touch --no-create -t "${Y}${M}010000" "$BASEDIR/$Y/$M"
     move_file "$f" "$BASEDIR/$Y/$M"
   fi
 done
