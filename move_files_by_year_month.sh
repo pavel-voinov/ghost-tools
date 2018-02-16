@@ -52,7 +52,7 @@ move_file () {
       cp -v --no-preserve=ownership "$_f" "$_d/$n" && rm -v "$_f" && chmod 0664 "$_d/$n"
     fi
   else
-    cp -v --no-preserve=ownership "$_f" "$_F" && rm -v "$_f" && chmod 0664 "$_d/$n"
+    cp -v --no-preserve=ownership "$_f" "$_F" && rm -v "$_f" && chmod 0664 "$_F"
   fi
 }
 
